@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+ <head> 
+  <meta charset="UTF-8"> 
+  <style type="text/css">
+	  html, body {
+	             height: 100%;
+	             margin: 0;
+	         }
+
+	         #mapa {
+	             min-height: 100%; 
+			 }
+    </style> 
+  <script type="text/javascript"> function initialize() { var marcadores = [ ['Inicio', 40.3732, -3.91955], ['Recorrido', 40.3732, -3.91968], ['Recorrido', 40.3732, -3.91981], ['Recorrido', 40.3733, -3.91993], ['Recorrido', 40.3733, -3.92004], ['Recorrido', 40.3734, -3.92014], ['Recorrido', 40.3734, -3.92025], ['Recorrido', 40.3735, -3.92032], ['Recorrido', 40.3736, -3.92036], ['Recorrido', 40.3737, -3.92042], ['Recorrido', 40.3738, -3.92045], ['Recorrido', 40.3739, -3.92044], ['Recorrido', 40.374, -3.92044], ['Recorrido', 40.3741, -3.92048], ['Recorrido', 40.3742, -3.92052], ['Recorrido', 40.3742, -3.92059], ['Recorrido', 40.3743, -3.92064], ['Recorrido', 40.3744, -3.92068], ['Recorrido', 40.3745, -3.92068], ['Recorrido', 40.3746, -3.92069], ['Recorrido', 40.3747, -3.92072], ['Recorrido', 40.3747, -3.92084], ['Recorrido', 40.3747, -3.92095], ['Recorrido', 40.3746, -3.92106], ['Recorrido', 40.3746, -3.92117], ['Recorrido', 40.3746, -3.9213], ['Final', 40.3746, -3.92142] ];
+	  //En este script va a insertar los datos (Cuarto atributo de tipo script hijo del head)
+	  var bounds  = new google.maps.LatLngBounds();//Funcion que recoge las coordenadas de los límites del mapa para autocenter y autozoom
+	  var latlong = new Array(); //array con los marcadores que recoge de marcadores, utilizada para las líneas
+  		  for (i = 0; i < marcadores.length; i++) {
+  			  latlong.push(new google.maps.LatLng(marcadores[i][1], marcadores[i][2]));
+  		  }
+		  
+		    var map = new google.maps.Map(document.getElementById('mapa'), {
+                //zoom: 15,
+				scaleControl: true,
+				//center: latlong[centro],	
+                //center: new google.maps.LatLng(40.373152, -3.918835),
+                mapTypeId: google.maps.MapTypeId.ROADMAP//Tipo de mapa
+            });
+            var marker, i;
+            for (i = 0; i < marcadores.length; i++) {
+				
+				loc = new google.maps.LatLng(marcadores[i][1], marcadores[i][2]);
+				bounds.extend(loc);//Introducimos las coordenadas de los límites del mapa para que genere el centro y su correspodiente zoom
+				
+				if(marcadores[i][0]=='Inicio'){
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(marcadores[i][1], marcadores[i][2]),
+                    map: map,
+					animation: google.maps.Animation.DROP,
+					icon: 'https://image.ibb.co/gzXQO5/start_race_2.png'//Obtenido de imagebb web
+                });
+			}else if(marcadores[i][0]=='Final'){
+				marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(marcadores[i][1], marcadores[i][2]),//Posicion del marcador
+                    map: map,//Mapa en el que pintamos
+					//label: 'FIN',
+					animation: google.maps.Animation.DROP,//Animacion de caida
+					icon: 'https://image.ibb.co/fE9Qqk/finish_1.png'//Obtenido de imagebb web
+                });
+			}
+			
+			}
+		    map.setCenter(bounds.getCenter());
+		     map.fitBounds(bounds);
+				  // map.fitBounds(bounds);       //# auto-zoom
+				   //map.panToBounds(bounds);     //# auto-center
+			
+			var lineas = new google.maps.Polyline({
+			          strokeColor: '#6cb5ed',//Color
+			          strokeOpacity: 1.0,//Opacidad
+			          strokeWeight: 5,//Anchura de la línea
+				      path: latlong //De donde obtiene los puntos
+			        });
+			        lineas.setMap(map);//Pinta las líneas en el mapa
+			}
+            
+        
+			
+			//google.maps.event.addDomListener(window, 'load', initialize);//main
+		
+    </script> 
+ </head> 
+ <body> 
+  <div id="mapa"></div> 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf2HBkIPjKZGXVNpwToqSh5k83Ccxuauw&amp;callback=initialize" async defer></script>  
+ </body>
+</html>
